@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidateData } from '../utils/validate'
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth'
+import { auth } from '../utils/firebase'
 
 const Login = () => {
 
   const [isSignInForm,setIsSignInForm]=useState(true)
-  const [errorMessgae,setErrorMessage]=useState(null)
+  const [errorMessage,setErrorMessage]=useState(null)
 
   const toggleSignInForm=()=>{
     setIsSignInForm(!isSignInForm)
@@ -20,6 +22,32 @@ const Login = () => {
     //console.log(password)
     const message=checkValidateData(email.current.value,password.current.value)
     setErrorMessage(message)
+
+    if(message)return
+
+    if(!isSignInForm){
+      createUserWithEmailAndPassword(auth,email.current.value,password.current.value)
+      .then((userCredential)=>{
+        const user=userCredential.user
+        //console.log(user)
+      })
+      .catch((error)=>{
+        const errorCode=error.code;
+        const errorMessage=error.message
+        setErrorMessage(errorCode+" - "+errorMessage)
+      })
+    }
+    else{
+      signInWithEmailAndPassword(auth,email.current.value,password.current.value)
+      .then((userCredential)=>{
+        const user=userCredential.user
+      })
+      .catch((error)=>{
+        const errorCode=error.code;
+        const errorMessage=error.message
+        setErrorMessage(errorCode+" - "+errorMessage)
+      })
+    }
     //console.log(message)
   }
 
@@ -36,7 +64,7 @@ const Login = () => {
         <input type='text' placeholder='Email Address' ref={email} className='p-4 my-2 w-full bg-gray-700'/>
         <input type='password' placeholder='Password' ref={password} className='p-4 my-2 w-full bg-gray-700'/>
         <button className='p-4 my-2 bg-red-700 w-full rounded-lg' onClick={handleButtonClick}>{isSignInForm?'Sign In':'Sign Up'}</button>
-        <p className='py-2 font-bold text-3lg text-red-700'>{errorMessgae}</p>
+        <p className='py-2 font-bold text-3lg text-red-700'>{errorMessage}</p>
         <p className='py-4 cursor-pointer' onClick={toggleSignInForm}>{isSignInForm?'New to Netflix? Sign Up Now':'Already a User? Sign In Now'}</p>
       </form>
     </div>
