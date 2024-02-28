@@ -32,11 +32,19 @@ const Header = () => {
     }))
   }
 
+  const handleGptSearchClick=()=>{
+
+  }
+  
   return (
     <div className='w-screen absolute px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between'>
       <img className='w-44' src={LOGO} alt='logo'/>
     {auth.currentUser && <div className='flex p-2 m-2'>
-      <div className='font-bold text-xl m-2'>{auth.currentUser.displayName}</div>
+    <button 
+    className='py-2 px-4 mx-4 my-2 bg-purple-800 text-white rounded-lg'
+    onClick={handleGptSearchClick}>
+      GPT Search</button>
+      <div className='font-bold text-white text-xl m-2'>{auth.currentUser.displayName}</div>
        <img
        className='w-12 h-12'
        src={USER_ICON} alt='userIcon'
