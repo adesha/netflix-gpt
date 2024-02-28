@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {addUser, removeUser} from '../utils/userSlice'
 import { LOGO, USER_ICON } from '../utils/constants'
+import { toggleGptSearchView } from '../utils/gptSlice'
 const Header = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -33,9 +34,9 @@ const Header = () => {
   }
 
   const handleGptSearchClick=()=>{
-
+    dispatch(toggleGptSearchView())
   }
-  
+
   return (
     <div className='w-screen absolute px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between'>
       <img className='w-44' src={LOGO} alt='logo'/>
