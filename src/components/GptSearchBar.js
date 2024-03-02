@@ -1,9 +1,12 @@
 import React, { useRef } from 'react'
 import openai from '../utils/openai'
 import { API_OPTIONS } from '../utils/constants'
+import { useDispatch } from 'react-redux'
+import { addGptMovieResult } from '../utils/gptSlice'
 
 const GptSearchBar = () => {
   const searchText=useRef(null)
+  const dispatch=useDispatch()
 
   const searchMovieTMDB=async(movie)=>{
     const data=await fetch('https://api.themoviedb.org/3/search/movie?query='+movie+'&include_adult=false&language=en-US&page=1',API_OPTIONS)
@@ -29,6 +32,7 @@ const GptSearchBar = () => {
     const tmdbResults = await Promise.all(promiseArray);
 
     console.log(tmdbResults)
+    dispatch(addGptMovieResult({movieNames: gptMovies,movieResults: tmdbResults}))
   }
 
   return (
