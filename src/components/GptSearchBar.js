@@ -6,7 +6,7 @@ const GptSearchBar = () => {
 
   const handleGptSearchClick= async ()=>{
     const gptResults=await openai.chat.completions.create({
-      messages:[{role:"user",content:{searchText}}],
+      messages:[{role:"user",content:searchText.current.value}],
       model:'gpt-3.5-turbo'
     })
     console.log(gptResults.choices)
